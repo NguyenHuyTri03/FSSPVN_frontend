@@ -1,0 +1,246 @@
+/* === General Header Styling === */
+.header {
+    position: relative;
+    font-family: "Roboto Flex", sans-serif;
+    background-color: #FFFDFA;
+    padding: 1rem 1rem;
+    box-shadow: 0px 13px 10px -8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 200px;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+    height: 60px;
+    width: 160px;
+}
+
+/* === Nav List (Desktop) === */
+.nav-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.nav-link::after {
+    display: block;
+    content: "";
+    margin: auto;
+    width: 0;
+    height: 2px;
+    background-color: #e4e2df;
+    transition: width 0.3s;
+}
+
+.nav-link:hover {
+    color: #001a75;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-block;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer !important;
+    font-weight: bold;
+    color: #050301;
+}
+
+.nav-button::after {
+    display: block;
+    content: "";
+    margin: auto;
+    width: 0;
+    height: 2px;
+    background-color: #050301;
+    transition: width 0.3s;
+}
+
+.nav-button:hover {
+    color: #6b6b6b;
+}
+
+.nav-button:hover::after {
+    width: 100%;
+}
+
+/* === Arrows === */
+.arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.rotate-down {
+    transform: rotate(0deg);
+}
+
+.rotate-up {
+    transform: rotate(180deg);
+}
+
+/* === Dropdown Menu === */
+.dropdown {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    background: #FFFDFA;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0 0;
+    margin: 0;
+    width: max-content;
+    min-width: 100%;
+    z-index: 10;
+    box-shadow: 3px 2px 5px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.dropdown-item {
+    padding: 0.5rem 2rem;
+    border-bottom: 1px #e4e2df solid;
+}
+
+.dropdown-item a {
+    text-decoration: none;
+    color: #8f8f8d;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.dropdown-item a::after {
+    display: block;
+    content: "";
+    margin: auto;
+    width: 0;
+    height: 2px;
+    background-color: #050301;
+    transition: width 0.3s;
+}
+
+.dropdown-item a:hover {
+    color: #050301;
+}
+
+.dropdown-item a:hover::after {
+    width: 100%;
+}
+
+.arrow-icon {
+    margin-left: 0.3rem;
+    font-size: 0.7rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-button:hover .arrow-icon {
+    color: #001a75;
+}
+
+
+/* === Hamburger Menu (Mobile) === */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(7px);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-7px);
+}
+
+/* === Responsive Styles === */
+@media (max-width: 768px) {
+    .nav-list {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: #222;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .nav-list.active {
+        max-height: 500px;
+        /* enough for menu */
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .nav-button {
+        width: 100%;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        border-top: 1px solid #333;
+    }
+
+    .dropdown {
+        position: static;
+        background: #333;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .dropdown-item a {
+        padding: 0.75rem 1rem;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
