@@ -1,9 +1,7 @@
-const host_url = import.meta.env.VITE_BACKEND_URL;
+const host_url = `${import.meta.env.VITE_BACKEND_URL}/api/posts`;
 
 export default async function PostCreate(form) {
-    console.log("[POST FORM] ", form);
-
-    await fetch(`${host_url}/api/post/create`, {
+    await fetch(`${host_url}/create`, {
         method: "POST",
         "credentials": "include",
         headers: {
@@ -15,4 +13,9 @@ export default async function PostCreate(form) {
     }).then((data) => {
         console.log("[POST STAT]", data.status);
     });
+}
+
+export async function FetchAllPosts(catId) {
+    const posts = [];
+    await fetch(`${host_url}`)
 }

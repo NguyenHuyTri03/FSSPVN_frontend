@@ -1,23 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostCreate from "../../../services/post.service";
+import getAllCat from "../../../services/category.service";
 
 export default function CreatePost() {
     const host_url = import.meta.env.VITE_BACKEND_URL;
     const [form, setForm] = useState({
         title: "",
         content: "",
-        categoryId: "",
+        categoryId: 0,
         coverImg: ""
     });
+    const [cat, setCat] = useState([]);
+
+    useEffect(() => {
+        const fetchCat = async () => {
+            try {
+                const cat = await getAllCat();
+                setCat(cat);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        fetchCat();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        setForm((prev) => ({
+            ...prev,
+            [name]: name === "categoryId" ? Number(value) : value
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log(form);
             const postDat = {
                 ...form,
                 createdAt: new Date().toISOString()
@@ -25,7 +44,7 @@ export default function CreatePost() {
             const status = await PostCreate(postDat);
             if (status) {
                 alert("Post created successfully!");
-                setForm({ title: "", content: "", category: "", coverImg: "" });
+                setForm({ title: "", content: "", categoryId: 0, coverImg: "" });
             }
         } catch (err) {
             console.error(err);
@@ -34,10 +53,10 @@ export default function CreatePost() {
     };
 
     return (
-        <div style={{ width: "90%", margin: "2rem auto", padding: "1rem", border: "1px solid #ddd", borderRadius: "8px" }}>
+        <div style={{ width: "90%", height: "100%", margin: "2rem auto", padding: "1rem" }}>
             <a href="/">Home</a>
             <h2>Create New Post</h2>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", color: "black", flexDirection: "column", gap: "1rem" }}>
                 {/* Title */}
                 <div>
                     <label>Title</label>
@@ -47,7 +66,7 @@ export default function CreatePost() {
                         value={form.title}
                         onChange={handleChange}
                         required
-                        style={{ width: "100%", padding: "0.5rem", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
+                        style={{ width: "100%", padding: "0.5rem", color: "black", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
                     />
                 </div>
 
@@ -60,7 +79,7 @@ export default function CreatePost() {
                         onChange={handleChange}
                         rows={20}
                         required
-                        style={{ width: "100%", padding: "0.5rem", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
+                        style={{ width: "100%", padding: "0.5rem", color: "black", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
                     />
                 </div>
 
@@ -68,17 +87,17 @@ export default function CreatePost() {
                 <div>
                     <label>Category</label>
                     <select
-                        name="category"
-                        value={form.category}
+                        name="categoryId"
+                        value={form.categoryId}
                         onChange={handleChange}
                         required
-                        style={{ width: "100%", padding: "0.5rem", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
+                        style={{ width: "100%", padding: "0.5rem", color: "black", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
                     >
-                        <option value="">Select Category</option>
-                        <option value="tech">Tech</option>
-                        <option value="lifestyle">Lifestyle</option>
-                        <option value="travel">Travel</option>
-                        <option value="news">News</option>
+                        <option value={0} disabled>Select a category</option>
+                        {cat.map((item) => (
+                            <option key={item.id} value={item.id}>{item.vn}</option>
+                        ))}
+
                     </select>
                 </div>
 
@@ -91,7 +110,7 @@ export default function CreatePost() {
                         value={form.coverImg}
                         onChange={handleChange}
                         placeholder="https://example.com/cover.jpg"
-                        style={{ width: "100%", padding: "0.5rem", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
+                        style={{ width: "100%", padding: "0.5rem", color: "black", backgroundColor: "white", border: "1px solid", borderRadius: "7px" }}
                     />
                 </div>
 
@@ -99,7 +118,7 @@ export default function CreatePost() {
                 {form.coverImg && (
                     <div>
                         <label>Preview:</label>
-                        <img src={form.coverImg} alt="Cover Preview" style={{ width: "100%", marginTop: "0.5rem", borderRadius: "6px" }} />
+                        <img src={form.coverImg} alt="Cover Preview" style={{ width: "300px", height: "200px", marginTop: "0.5rem", borderRadius: "6px", color: "black" }} />
                     </div>
                 )}
 

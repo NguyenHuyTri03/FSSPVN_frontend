@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './home.css';
 
 export default function Home() {
+
     return (
         <div className="home">
             <p>home</p>

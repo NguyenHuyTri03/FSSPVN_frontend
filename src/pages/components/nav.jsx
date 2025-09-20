@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import "./nav.css";
 import logo from "../../assets/fssp_logo_en.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Checkbox from "./hamburger";
 
 const Navigation = () => {
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
 
     const menuItems = [
         { name: "TRANG CHỦ", path: "/" },
@@ -44,23 +48,29 @@ const Navigation = () => {
         setActiveDropdown(activeDropdown === item ? null : item);
     };
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        console.log("Search for:", searchValue);
+        // TODO: implement search navigation
+    };
+
     return (
         <header className="header">
             <nav className="navbar">
+                <div className="filler"></div>
+
                 <div className="logo">
-                    <img src="https://www.fssp.org/wp-content/uploads/2016/08/cropped-titre.jpg" alt="FSSP logo" />
+                    <img
+                        src="https://www.fssp.org/wp-content/uploads/2016/08/cropped-titre.jpg"
+                        alt="FSSP logo"
+                    />
                 </div>
 
-                {/* Hamburger Button */}
-                <button
-                    className={`hamburger ${menuOpen ? "open" : ""}`}
-                    onClick={() => setMenuOpen(!menuOpen)}
-                    aria-label="Toggle Menu"
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                {/* Hamburger */}
+                <Checkbox
+                    checked={menuOpen}
+                    onChange={() => setMenuOpen(!menuOpen)}
+                />
 
                 {/* Nav List */}
                 <ul className={`nav-list ${menuOpen ? "active" : ""}`}>
@@ -89,16 +99,18 @@ const Navigation = () => {
 
                                 {item.subpages && (
                                     <FontAwesomeIcon
-                                        icon={
-                                            activeDropdown === item.name ? faChevronUp : faChevronDown
-                                        }
-                                        className="arrow-icon"
+                                        icon={faChevronDown}
+                                        className={`arrow-icon ${activeDropdown === item.name ? "open" : ""
+                                            }`}
                                     />
                                 )}
                             </div>
 
                             {item.subpages && activeDropdown === item.name && (
-                                <ul className="dropdown">
+                                <ul
+                                    className={`dropdown ${activeDropdown === item.name ? "open" : ""
+                                        }`}
+                                >
                                     {item.subpages.map((sub) => (
                                         <li key={sub.name} className="dropdown-item">
                                             <Link to={sub.path}>{sub.name}</Link>
@@ -110,7 +122,21 @@ const Navigation = () => {
                     ))}
                 </ul>
 
-                <input type="text" />
+                {/* Search Bar */}
+                <div className="search-div">
+                    <div className={`search-bar ${searchOpen ? "active" : ""}`}>
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            className="search-icon"
+                            onClick={() => setSearchOpen(!searchOpen)}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="search-input"
+                        />
+                    </div>
+                </div>
             </nav>
         </header>
     );
